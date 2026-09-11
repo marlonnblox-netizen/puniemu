@@ -215,6 +215,12 @@ class Program
             await ctx.Response.WriteAsync(html);
         });
 
+        //Requested by the game client on launch
+        app.MapGet("/hsp/lnc/getLaunchingInfos.json", async ctx =>
+        {
+            await LaunchingInfosHandler.HandleAsync(ctx);
+        });
+
         app.MapPost("/init.nhn", async ctx =>
         {
             await InitHandler.HandleAsync(ctx);
