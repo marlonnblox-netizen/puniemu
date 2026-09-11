@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.HttpOverrides;
 using Puniemu.Src.Server.GameServer.Requests.DefaultHandler.Logic;
 using Puniemu.Src.Server.GameServer.Requests.GetL5IDStatus.Logic;
 using Puniemu.Src.Server.GameServer.Requests.CreateUser.Logic;
@@ -81,6 +82,16 @@ class Program
         });
 
         var app = builder.Build();
+
+        //Trust the X-Forwarded-Proto header from Render/Cloudflare so ctx.Request.Scheme
+        //correctly reports "https" instead of the internal "http" the proxy uses
+        app.UseForwardedHeaders(new ForwardedHeadersOptions
+        {
+            ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+            KnownNetworks = { },
+            KnownProxies = { }
+        });
+
         //Rewrite to redirect mainly all .NHN requests to .NHN/, as ASP.NET Core thinks it's static serving otherwise or something 
         //second rewrite is in case it's for example /////////////////////init.nhn it makes it /init.nhn
         var rewriteOptions = new RewriteOptions()
