@@ -33,3 +33,5 @@ namespace Puniemu.Src.Server.GameServer.Requests.LaunchingInfos.Logic
             ctx.Response.Headers.ContentType = "application/json";
             await ctx.Response.WriteAsync(json);
         }
+    }
+}
