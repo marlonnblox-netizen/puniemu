@@ -231,6 +231,11 @@ class Program
         {
             await LaunchingInfosHandler.HandleAsync(ctx);
         });
+        //Also requested without /lnc/ (e.g. heartbeat / periodic re-check)
+        app.MapGet("/hsp/getLaunchingInfos.json", async ctx =>
+        {
+            await LaunchingInfosHandler.HandleAsync(ctx);
+        });
 
         app.MapPost("/init.nhn", async ctx =>
         {
